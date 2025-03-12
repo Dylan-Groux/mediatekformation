@@ -15,19 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FormationsController extends AbstractController {
 
-    /**
-     * 
-     * @var FormationRepository
-     */
-    private $formationRepository;
+    private FormationRepository $formationRepository;
+    private CategorieRepository $categorieRepository;
+
+    private const TEMPLATE_PATH = "pages/formations.html.twig";
     
-    /**
-     * 
-     * @var CategorieRepository
-     */
-    private $categorieRepository;
-    
-    function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository) {
+    public function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository) {
         $this->formationRepository = $formationRepository;
         $this->categorieRepository= $categorieRepository;
     }
@@ -36,41 +29,41 @@ class FormationsController extends AbstractController {
     public function index(): Response{
         $formations = $this->formationRepository->findAll();
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/formations.html.twig", [
+        return $this->render(self::TEMPLATE_PATH, [
             'formations' => $formations,
             'categories' => $categories
         ]);
     }
 
     #[Route('/formations/tri/{champ}/{ordre}/{table}', name: 'formations.sort')]
-    public function sort($champ, $ordre, $table=""): Response{
+    public function sort(string $champ, string $ordre, string $table=""): Response{
         $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
         $categories = $this->categorieRepository->findAll();
         return $this->render("pages/formations.html.twig", [
             'formations' => $formations,
             'categories' => $categories
         ]);
-    }     
+    }
 
     #[Route('/formations/recherche/{champ}/{table}', name: 'formations.findallcontain')]
-    public function findAllContain($champ, Request $request, $table=""): Response{
+    public function findAllContain(string $champ, Request $request, string $table=""): Response{
         $valeur = $request->get("recherche");
         $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/formations.html.twig", [
+        return $this->render(self::TEMPLATE_PATH, [
             'formations' => $formations,
             'categories' => $categories,
             'valeur' => $valeur,
             'table' => $table
         ]);
-    }  
+    }
 
     #[Route('/formations/formation/{id}', name: 'formations.showone')]
-    public function showOne($id): Response{
+    public function showOne(int $id): Response{
         $formation = $this->formationRepository->find($id);
-        return $this->render("pages/formation.html.twig", [
+        return $this->render(self::TEMPLATE_PATH, [
             'formation' => $formation
-        ]);        
-    }   
+        ]);
+    }
     
 }
