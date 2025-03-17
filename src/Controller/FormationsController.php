@@ -71,41 +71,4 @@ class FormationsController extends AbstractController {
         ]);
     }
 
-    #[Route('/formations/{id}/delete', name: 'formations_delete')]
-    public function delete(int $id): Response
-    {
-        $formation = $this->formationRepository->find($id);
-
-        if ($formation) {
-            $this->entityManager->remove($formation);
-            $this->entityManager->flush();
-        } else {
-            $this->addFlash('error', 'Formation non trouvée.');
-        }
-
-        return $this->redirectToRoute('formations');
-    }
-    
-    #[Route('/formations/{id}/edit', name: 'formations_edit')]
-    public function edit(Request $request, int $id): Response
-    {
-        $formation = $this->formationRepository->find($id);
-
-        if (!$formation) {
-            throw $this->createNotFoundException('Formation non trouvée.');
-        }
-
-        $form = $this->createForm(FormationType::class, $formation);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->flush();
-            return $this->redirectToRoute('formations');
-        }
-
-        return $this->render('pages/formations/edit.html.twig', [
-            'formation' => $formation,
-            'form' => $form->createView(),
-        ]);
-    }
 }
