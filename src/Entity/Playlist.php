@@ -29,6 +29,8 @@ class Playlist
     #[ORM\OneToMany(targetEntity: Formation::class, mappedBy: 'playlist')]
     private Collection $formations;
 
+    private ?int $nbFormations = null;
+
     public function __construct()
     {
         $this->formations = new ArrayCollection();
@@ -106,5 +108,14 @@ class Playlist
             }
         }
         return $categories;
+    }
+
+    public function getNbFormations(): ?int {
+        return $this->nbFormations;
+    }
+    
+    public function setNbFormations(int $nbFormations): self {
+        $this->nbFormations = $nbFormations;
+        return $this;
     }
 }

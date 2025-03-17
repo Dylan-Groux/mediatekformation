@@ -31,21 +31,25 @@ class PlaylistsController extends AbstractController {
     
     #[Route('/playlists', name: 'playlists')]
     public function index(): Response{
-        $playlists = $this->playlistRepository->findAllOrderByName('ASC');
+        $playlists = $this->playlistRepository->findAllWithFormationCount();
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/playlists.html.twig", [
+        return $this->render(self::TEMPLATE_PATH, [
             'playlists' => $playlists,
             'categories' => $categories
         ]);
     }
 
     #[Route('/playlists/tri/{champ}/{ordre}', name: 'playlists.sort')]
-    public function sort(string $champ, string $ordre): Response{
+    public function sort(string $champ, string $ordre): Response
+    {
         if ($champ === "name") {
             $playlists = $this->playlistRepository->findAllOrderByName($ordre);
+        } elseif ($champ === "nbFormations") {
+            $playlists = $this->playlistRepository->findAllWithFormationCount($ordre);
         } else {
             $playlists = [];
         }
+    
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::TEMPLATE_PATH, [
             'playlists' => $playlists,
@@ -68,10 +72,20 @@ class PlaylistsController extends AbstractController {
 
     #[Route('/playlists/playlist/{id}', name: 'playlists.showone')]
     public function showOne(int $id): Response{
+
         $playlist = $this->playlistRepository->find($id);
+
+        if (!$playlist) {
+            throw $this->createNotFoundException("La playlist n'existe pas");
+        }
+
+        //Récupération des catégories et formations de la playlist
         $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
         $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
-        return $this->render(self::TEMPLATE_PATH, [
+        $categories = $this->categorieRepository->findAll();
+
+        return $this->render("pages/playlist.html.twig", [
+            'categories' => $categories,
             'playlist' => $playlist,
             'playlistcategories' => $playlistCategories,
             'playlistformations' => $playlistFormations
