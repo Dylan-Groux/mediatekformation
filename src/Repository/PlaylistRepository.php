@@ -34,13 +34,35 @@ class PlaylistRepository extends ServiceEntityRepository
      * @param string $ordre
      * @return Playlist[]
      */
-    public function findAllOrderByName($ordre): array{
+    public function findAllOrderByName($ordre): array {
         return $this->createQueryBuilder('p')
-                ->leftjoin('p.formations', 'f')
-                ->groupBy('p.id')
-                ->orderBy('p.name', $ordre)
-                ->getQuery()
-                ->getResult();
+            ->leftJoin('p.formations', 'f')
+            ->leftJoin('f.categories', 'c')
+            ->addSelect('f', 'c') // Inclure les formations et les catégories liées à la playlist
+            ->orderBy('p.name', $ordre) // Tri par nom de playlist
+            ->getQuery()
+            ->getResult(); // Retourne des objets Playlist complets avec leurs relations
+    }
+
+    public function findAllWithFormationCount(string $ordre = "ASC"): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p, COUNT(f.id) AS nbFormations')
+            ->leftJoin('p.formations', 'f')
+            ->groupBy('p.id')
+            ->orderBy('nbFormations', $ordre)
+            ->getQuery();
+    
+        $results = $qb->getResult();
+    
+        // Associer le nombre de formations aux objets Playlist
+        foreach ($results as $index => $result) {
+            $playlist = $result[0]; // L'objet Playlist
+            $playlist->setNbFormations($result['nbFormations'] ?? 0); // Ajoute un setter dans ton entity Playlist
+            $results[$index] = $playlist;
+        }
+    
+        return $results;
     }
 
     /**
@@ -51,30 +73,29 @@ class PlaylistRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Playlist[]
      */
-    public function findByContainValue($champ, $valeur, $table=""): array{
-        if($valeur==""){
+    public function findByContainValue($champ, $valeur, $table=""): array {
+        if ($valeur == "") {
             return $this->findAllOrderByName('ASC');
         }
-        if($table==""){
+    
+        if ($table == "") {
             return $this->createQueryBuilder('p')
-                    ->leftjoin('p.formations', 'f')
-                    ->where('p.'.$champ.' LIKE :valeur')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->groupBy('p.id')
-                    ->orderBy('p.name', 'ASC')
-                    ->getQuery()
-                    ->getResult();
-        }else{
+                ->leftJoin('p.formations', 'f')
+                ->groupBy('p.id')
+                ->orderBy('p.name', 'ASC')
+                ->getQuery()
+                ->getResult();
+        } else {
             return $this->createQueryBuilder('p')
-                    ->leftjoin('p.formations', 'f')
-                    ->leftjoin('f.categories', 'c')
-                    ->where('c.'.$champ.' LIKE :valeur')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->groupBy('p.id')
-                    ->orderBy('p.name', 'ASC')
-                    ->getQuery()
-                    ->getResult();
+                ->leftJoin('p.formations', 'f')
+                ->leftJoin('f.categories', 'c')
+                ->addSelect('f', 'c')
+                ->where('c.' . $champ . ' LIKE :valeur')
+                ->setParameter('valeur', '%' . $valeur . '%')
+                ->groupBy('p.id, c.id')
+                ->orderBy('p.name', 'ASC')
+                ->getQuery()
+                ->getResult();
         }
     }
-
 }

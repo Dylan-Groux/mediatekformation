@@ -6,9 +6,9 @@
             <strong>catégories : </strong>
                 <!-- boucle pour afficher les catégories -->
                 {% set anccategorie = '' %}
-                {% for playlist in playlistcategories %}
-                    {{ playlist.name }}&nbsp;
-                {% endfor %}
+                    {% for playlists in playlistcategories %}
+                        {{ playlists.name }}&nbsp;
+                    {% endfor %}
             <br /><br />
             <strong>description :</strong><br />
                 {{ playlist.description|nl2br }}

@@ -1,13 +1,13 @@
-{% extends "basefront.html.twig" %}
+{% extends "admin.html.twig" %}
 {% block body %}
     <table class="table table-striped">
         <thead>
             <tr>
                 <th class="text-left align-top" scope="col">
                     Playlist<br />
-                    <button onclick="location.href='{{ path('playlists.sort', {champ:'name', ordre:'ASC'}) }}'" class="btn btn-info btn-sm">▲</button>
-                    <button onclick="location.href='{{ path('playlists.sort', {champ:'name', ordre:'DESC'}) }}'" class="btn btn-info btn-sm">▼</button>
-                    <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findallcontain', {champ:'name'}) }}">
+                    <button onclick="location.href='{{ path('admin_playlists.sort', {champ:'name', ordre:'ASC'}) }}'" class="btn btn-info btn-sm">▲</button>
+                    <button onclick="location.href='{{ path('admin_playlists.sort', {champ:'name', ordre:'DESC'}) }}'" class="btn btn-info btn-sm">▼</button>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('admin_playlists.findallcontain', {champ:'name'}) }}">
                         <div class="form-group mr-1 mb-2">
                             <input type="text" class="sm" name="recherche" value="{% if valeur is defined and table is not defined %}{{ valeur }}{% endif %}">
                             <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
@@ -17,7 +17,7 @@
                 </th>
                 <th class="text-left align-top" scope="col">
                     Catégories
-                    <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findallcontain', {champ:'id', table:'categories'}) }}">
+                    <form class="form-inline mt-1" method="POST" action="{{ path('admin_playlists.findallcontain', {champ:'id', table:'categories'}) }}">
                         <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit()">
                             <option value=""></option>
                             {% for categorie in categories %}
@@ -29,9 +29,9 @@
                     </form>            
                 </th>
                 <th scope="col">
-                    <a href="{{ path('playlists.sort', {champ: 'nbFormations', ordre: 'ASC'}) }}">▲</a>
+                    <a href="{{ path('admin_playlists.sort', {champ: 'nbFormations', ordre: 'ASC'}) }}">▲</a>
                     Nombre de formations
-                    <a href="{{ path('playlists.sort', {champ: 'nbFormations', ordre: 'DESC'}) }}">▼</a>
+                    <a href="{{ path('admin_playlists.sort', {champ: 'nbFormations', ordre: 'DESC'}) }}">▼</a>
                 </th>				
                 <th class="text-center align-top" scope="col">&nbsp;</th>
             </tr>
