@@ -21,7 +21,7 @@ class FormationType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre',
+                'label' => 'Titre *',
                 'required' => true,
                 'attr' => [
                     'class' => 'form-control',
@@ -43,18 +43,19 @@ class FormationType extends AbstractType
                 ],
             ])
             ->add('publishedAt', DateType::class, [
-                'label' => 'Date de publication',
+                'label' => 'Date de publication *',
                 'widget' => 'single_text',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
+                    'min' => (new \DateTime())->format('Y-m-d'),
                 ],
             ])
             ->add('playlist', EntityType::class, [
                 'class' => Playlist::class,
                 'choice_label' => 'name',
-                'label' => 'Playlist',
-                'required' => false,
+                'label' => 'Playlist *',
+                'required' => true,
                 'placeholder' => 'Sélectionnez une playlist',
                 'attr' => [
                     'class' => 'form-control',
@@ -72,7 +73,7 @@ class FormationType extends AbstractType
                 ],
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Modifier',
+                'label' => $options['is_edit'] ? 'Modifier' : 'Créer',
                 'attr' => [
                     'class' => 'btn btn-primary mt-3',
                 ],
@@ -83,6 +84,7 @@ class FormationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Formation::class,
+            'is_edit' => false,
         ]);
     }
 }

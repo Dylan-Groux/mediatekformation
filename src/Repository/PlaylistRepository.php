@@ -35,6 +35,11 @@ class PlaylistRepository extends ServiceEntityRepository
      * @return Playlist[]
      */
     public function findAllOrderByName($ordre): array {
+
+        if (!in_array($ordre, ['ASC', 'DESC'])) {
+            throw new \InvalidArgumentException('Ordre de tri invalide');
+        }
+        
         return $this->createQueryBuilder('p')
             ->leftJoin('p.formations', 'f')
             ->leftJoin('f.categories', 'c')
@@ -43,6 +48,7 @@ class PlaylistRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult(); // Retourne des objets Playlist complets avec leurs relations
     }
+
 
     public function findAllWithFormationCount(string $ordre = "ASC"): array
     {
@@ -64,7 +70,8 @@ class PlaylistRepository extends ServiceEntityRepository
     
         return $results;
     }
-
+    
+    
     /**
      * Enregistrements dont un champ contient une valeur
      * ou tous les enregistrements si la valeur est vide
