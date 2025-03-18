@@ -62,6 +62,11 @@
                         <td class="text-center">
                             <a href="{{ path('playlists.showone', {id: playlist.id}) }}" class="btn btn-secondary">Voir détail</a>
                         </td>
+                        <td class="text-center align-middle col-3">
+                        <a href="{{ path('admin_playlists_edit', {id: playlist.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <a href="{{ path('admin_playlists_delete', {id: playlist.id}) }}" class="btn btn-danger btn-sm" 
+                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette formation ?');">Supprimer</a>
+                        </td>
                     </tr>
                 {% endfor %}    
             {% else %}

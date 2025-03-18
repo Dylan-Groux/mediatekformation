@@ -15,7 +15,7 @@ class Formation
      * Début de chemin vers les images
      */
     private const CHEMIN_IMAGE = "https://i.ytimg.com/vi/";
-        
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -33,7 +33,7 @@ class Formation
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $videoId = null;
 
-    #[ORM\ManyToOne(inversedBy: 'formations')]
+    #[ORM\ManyToOne(targetEntity: Playlist::class, inversedBy: "formations")]
     private ?Playlist $playlist = null;
 
     /**
@@ -65,12 +65,12 @@ class Formation
     }
 
     public function getPublishedAtString(): string {
-        if($this->publishedAt == null){
+        if ($this->publishedAt == null) {
             return "";
         }
         return $this->publishedAt->format('d/m/Y');
     }
-    
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -116,7 +116,7 @@ class Formation
     {
         return self::CHEMIN_IMAGE.$this->videoId."/hqdefault.jpg";
     }
-    
+
     public function getPlaylist(): ?Playlist
     {
         return $this->playlist;

@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 class Playlist
 {
-    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -23,17 +22,24 @@ class Playlist
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    private ?int $nbFormations = null;
+
+    /**
+     * @var Collection<int, Categorie>
+     */
+    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'playlists')]
+    private Collection $categories;
+
     /**
      * @var Collection<int, Formation>
      */
-    #[ORM\OneToMany(targetEntity: Formation::class, mappedBy: 'playlist')]
+    #[ORM\OneToMany(mappedBy: "playlist", targetEntity: Formation::class)]
     private Collection $formations;
-
-    private ?int $nbFormations = null;
 
     public function __construct()
     {
         $this->formations = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,6 +71,42 @@ class Playlist
         return $this;
     }
 
+    public function getNbFormations(): ?int
+    {
+        return $this->nbFormations;
+    }
+
+    public function setNbFormations(int $nbFormations): self
+    {
+        $this->nbFormations = $nbFormations;
+        return $this;
+    }
+
+    
+    /**
+     * @return Collection<int, Categorie>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categorie $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categorie $category): static
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Formation>
      */
@@ -85,37 +127,13 @@ class Playlist
 
     public function removeFormation(Formation $formation): static
     {
-        if ($this->formations->removeElement($formation) && $formation->getPlaylist() === $this) {
+        if ($this->formations->removeElement($formation)) {
             // set the owning side to null (unless already changed)
-            $formation->setPlaylist(null);
-        }
-
-        return $this;
-    }
-    
-    /**
-     * @return Collection<int, string>
-     */
-    public function getCategoriesPlaylist(): Collection
-    {
-        $categories = new ArrayCollection();
-        foreach($this->formations as $formation){
-            $categoriesFormation = $formation->getCategories();
-            foreach($categoriesFormation as $categorieFormation) {
-                if(!$categories->contains($categorieFormation->getName())){
-                    $categories[] = $categorieFormation->getName();
-                }
+            if ($formation->getPlaylist() === $this) {
+                $formation->setPlaylist(null);
             }
         }
-        return $categories;
-    }
 
-    public function getNbFormations(): ?int {
-        return $this->nbFormations;
-    }
-    
-    public function setNbFormations(int $nbFormations): self {
-        $this->nbFormations = $nbFormations;
         return $this;
     }
 }

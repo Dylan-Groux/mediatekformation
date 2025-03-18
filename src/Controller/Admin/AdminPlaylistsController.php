@@ -71,4 +71,73 @@ class AdminPlaylistsController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/playlist/create', name: 'admin_playlist_create')]
+    public function createPlaylist(Request $request): Response
+    {
+        $playlist = new Playlist();
+    
+        $form = $this->createForm(PlaylistType::class, $playlist, [
+            'is_edit' => false
+        ]);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->entityManager->persist($playlist);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Playlist créée avec succès');
+            return $this->redirectToRoute('admin_playlists');
+        }
+    
+        return $this->render('admin/_playlist/form.playlist.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/admin/playlists/{id}/edit', name: 'admin_playlists_edit')]
+    public function edit(Request $request, int $id): Response
+    {
+        $playlist = $this->playlistRepository->find($id);
+
+        if (!$playlist) {
+            throw $this->createNotFoundException('Playlist non trouvée');
+        }
+
+        $form = $this->createForm(PlaylistType::class, $playlist, [
+            'is_edit' => true
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();
+            return $this->redirectToRoute('admin_playlists');
+        }
+
+        return $this->render('admin/_playlist/form.playlist.html.twig', [
+            'playlist' => $playlist,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/admin/playlists/{id}/delete', name: 'admin_playlists_delete')]
+    public function delete(int $id): Response
+    {
+        $playlists = $this->playlistRepository->find($id);
+
+        if (!$playlists) {
+            $this->addFlash('error', 'Playlist non trouvée.');
+        } elseif (count($playlists->getFormations()) > 0) {
+            $this->addFlash('error', 'La playlist contient des formations.');
+        }else {
+            $this->addFlash('error', 'Playlist non trouvée.');
+            $this->entityManager->remove($playlists);
+            $this->entityManager->flush();
+        }
+
+        return $this->redirectToRoute('admin_playlists');
+    }
+
+
+
 }

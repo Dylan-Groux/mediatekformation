@@ -39,6 +39,7 @@ class PlaylistType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Playlist::class,
+            'is_edit' => false
         ]);
     }
 }
