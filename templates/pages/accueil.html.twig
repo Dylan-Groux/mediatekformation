@@ -17,6 +17,7 @@
             <th>
                 <tr>
                     {% for formation in formations %}
+                    {{ dump(formation) }}
                         <td>
                             <div class="row">
                                 <div class="col">
@@ -32,11 +33,8 @@
                                     <h5 class="text-info mt-1">
                                         {{ formation.title }}
                                     </h5>
-                                    <strong>playlist : </strong>{{ formation.playlist.name }}<br />
-                                    <strong>catégories : </strong> 
-                                    {% for categorie in formation.categories %}
-                                        {{ categorie.name }}&nbsp;
-                                    {% endfor %}
+                                    <strong>playlist : </strong>{{ formation.playlist.name }}
+
                                 </div>    
                             </div>                    
                     {% endfor %}    

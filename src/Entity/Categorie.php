@@ -19,21 +19,21 @@ class Categorie
     private ?string $name = null;
 
     /**
-     * @var Collection<int, Formation>
-     */
-    #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'categories')]
-    private Collection $formations;
-
-    /**
      * @var Collection<int, Playlist>
      */
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'categories')]
     private Collection $playlists;
 
+    /**
+     * @var Collection<int, Formation>
+     */
+    #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'categories')]
+    private Collection $formations;
+
     public function __construct()
     {
-        $this->formations = new ArrayCollection();
         $this->playlists = new ArrayCollection();
+        $this->formations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -49,33 +49,6 @@ class Categorie
     public function setName(?string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Formation>
-     */
-    public function getFormations(): Collection
-    {
-        return $this->formations;
-    }
-
-    public function addFormation(Formation $formation): static
-    {
-        if (!$this->formations->contains($formation)) {
-            $this->formations->add($formation);
-            $formation->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFormation(Formation $formation): static
-    {
-        if ($this->formations->removeElement($formation)) {
-            $formation->removeCategory($this);
-        }
 
         return $this;
     }
@@ -102,6 +75,33 @@ class Categorie
     {
         if ($this->playlists->removeElement($playlist)) {
             $playlist->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Formation>
+     */
+    public function getFormations(): Collection
+    {
+        return $this->formations;
+    }
+
+    public function addFormation(Formation $formation): static
+    {
+        if (!$this->formations->contains($formation)) {
+            $this->formations->add($formation);
+            $formation->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormation(Formation $formation): static
+    {
+        if ($this->formations->removeElement($formation)) {
+            $formation->removeCategory($this);
         }
 
         return $this;
