@@ -88,6 +88,8 @@ class PlaylistRepository extends ServiceEntityRepository
         if ($table == "") {
             return $this->createQueryBuilder('p')
                 ->leftJoin('p.formations', 'f')
+                ->where('p.' . $champ . ' LIKE :valeur')
+                ->setParameter('valeur', '%' . $valeur . '%')
                 ->groupBy('p.id')
                 ->orderBy('p.name', 'ASC')
                 ->getQuery()

@@ -77,7 +77,8 @@ class AdminPlaylistsController extends AbstractController
         $playlist = new Playlist();
     
         $form = $this->createForm(PlaylistType::class, $playlist, [
-            'is_edit' => false
+            'is_edit' => false,
+            'formations' => false,
         ]);
         $form->handleRequest($request);
     
@@ -98,22 +99,35 @@ class AdminPlaylistsController extends AbstractController
     #[Route('/admin/playlists/{id}/edit', name: 'admin_playlists_edit')]
     public function edit(Request $request, int $id): Response
     {
+        // Récupérer la playlist
         $playlist = $this->playlistRepository->find($id);
-
+    
         if (!$playlist) {
             throw $this->createNotFoundException('Playlist non trouvée');
         }
-
+    
         $form = $this->createForm(PlaylistType::class, $playlist, [
-            'is_edit' => true
+            'is_edit' => true,
+            'playlist' => $playlist,
+            'formations' => true,
         ]);
+        
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $formations = $form->get('formations')->getData();
+
+            foreach ($formations as $formation) {
+                // Ajouter chaque formation à la playlist (si elle n'est pas déjà associée)
+                if (!$playlist->getFormations()->contains($formation)) {
+                    $playlist->addFormation($formation);
+                }
+            }
             $this->entityManager->flush();
+    
             return $this->redirectToRoute('admin_playlists');
         }
-
+    
         return $this->render('admin/_playlist/form.playlist.html.twig', [
             'playlist' => $playlist,
             'form' => $form->createView(),
@@ -123,16 +137,16 @@ class AdminPlaylistsController extends AbstractController
     #[Route('/admin/playlists/{id}/delete', name: 'admin_playlists_delete')]
     public function delete(int $id): Response
     {
-        $playlists = $this->playlistRepository->find($id);
+        $playlist = $this->playlistRepository->find($id);
 
-        if (!$playlists) {
+        if (!$playlist) {
             $this->addFlash('error', 'Playlist non trouvée.');
-        } elseif (count($playlists->getFormations()) > 0) {
+        } elseif (count($playlist->getFormations()) > 0) {
             $this->addFlash('error', 'La playlist contient des formations.');
         }else {
-            $this->addFlash('error', 'Playlist non trouvée.');
-            $this->entityManager->remove($playlists);
+            $this->entityManager->remove($playlist);
             $this->entityManager->flush();
+            $this->addFlash('success', 'Playlist supprimer avec succès.');
         }
 
         return $this->redirectToRoute('admin_playlists');

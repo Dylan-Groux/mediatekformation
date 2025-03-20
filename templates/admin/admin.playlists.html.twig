@@ -34,6 +34,10 @@
                     <a href="{{ path('admin_playlists.sort', {champ: 'nbFormations', ordre: 'DESC'}) }}">▼</a>
                 </th>				
                 <th class="text-center align-top" scope="col">&nbsp;</th>
+                                <th class="text-center align-center" scope="col">
+                <a href="{{ path('admin_playlist_create') }}" class="btn btn-success btn-sm" 
+                    onclick="return confirm('Vous allez être rediriger vers la page est-vous sur ?');">Ajouter</a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -67,6 +71,17 @@
                         <a href="{{ path('admin_playlists_delete', {id: playlist.id}) }}" class="btn btn-danger btn-sm" 
                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette formation ?');">Supprimer</a>
                         </td>
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
                     </tr>
                 {% endfor %}    
             {% else %}
