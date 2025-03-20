@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Ajouter une catégorie supplémentaire :{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+        
+        <a href="{{ path('admin_formations') }}" class="btn btn-secondary">Annuler</a>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
