@@ -3,7 +3,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th class="text-left align-center" scope="col">
+                <th class="col-4 text-left align-center" scope="col">
                     Formation<br />
                     <button onclick="location.href='{{ path('admin_formations_sort', {champ:'title', ordre:'ASC'}) }}'" class="btn btn-info btn-sm active" aria-pressed="true"><</button>
                     <button onclick="location.href='{{ path('admin_formations_sort', {champ:'title', ordre:'DESC'}) }}'" class="btn btn-info btn-sm active" aria-pressed="true">></button>
@@ -16,7 +16,7 @@
                         </div>
                     </form>                    
                 </th>
-                <th class="col-3 text-left align-center" scope="col">
+                <th class="col-4 text-left align-center" scope="col">
                     Playlist<br />
                     <button onclick="location.href='{{ path('admin_formations_sort', {table:'playlist', champ:'name', ordre:'ASC'}) }}'" class="btn btn-info btn-sm active" aria-pressed="true"><</button>
                     <button onclick="location.href='{{ path('admin_formations_sort', {table:'playlist', champ:'name', ordre:'DESC'}) }}'" class="btn btn-info btn-sm active" aria-pressed="true">></button>
@@ -45,7 +45,7 @@
                         </select>                    
                     </form>            
                 </th>
-                <th class="text-center align-center" scope="col">
+                <th class=" col-1 text-center align-center" scope="col">
                     Date<br />
                     <button onclick="location.href='{{ path('admin_formations_sort', {champ:'publishedAt', ordre:'ASC'}) }}'" class="btn btn-info btn-sm active" aria-pressed="true"><</button>
                     <button onclick="location.href='{{ path('admin_formations_sort', {champ:'publishedAt', ordre:'DESC'}) }}'" class="btn btn-info btn-sm active" aria-pressed="true">></button>                    
@@ -53,7 +53,7 @@
                 <th class="text-center align-top" scope="col">
                     &nbsp;
                 </th>
-                <th class="text-center align-center" scope="col">
+                <th class=" col-1 text-center align-center" scope="col">
                 <a href="{{ path('admin_formation_create') }}" class="btn btn-success btn-sm" 
                     onclick="return confirm('Vous allez être rediriger vers la page est-vous sur ?');">Ajouter</a>
                 </th>
@@ -87,7 +87,7 @@
                     </td>
                     </td>
                     <!-- Ajout des boutons de modification et suppression -->
-                    <td class="text-center align-middle col-3">
+                    <td class=" col-1 text-center align-middle col-3">
                         <a href="{{ path('admin_formations_edit', {id: formation.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
                         <a href="{{ path('admin_formations_delete', {id: formation.id}) }}" class="btn btn-danger btn-sm" 
                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette formation ?');">Supprimer</a>

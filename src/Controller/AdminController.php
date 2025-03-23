@@ -39,5 +39,4 @@ class AdminController extends AbstractController
             'formations' => $formations
         ]);
     }
-
 }

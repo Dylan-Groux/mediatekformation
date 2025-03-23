@@ -40,13 +40,25 @@ class PlaylistRepository extends ServiceEntityRepository
             throw new \InvalidArgumentException('Ordre de tri invalide');
         }
         
-        return $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
+            ->select('p, COUNT(f.id) AS nbFormations')
             ->leftJoin('p.formations', 'f')
             ->leftJoin('f.categories', 'c')
             ->addSelect('f', 'c') // Inclure les formations et les catégories liées à la playlist
+            ->groupBy('p.id')
             ->orderBy('p.name', $ordre) // Tri par nom de playlist
-            ->getQuery()
-            ->getResult(); // Retourne des objets Playlist complets avec leurs relations
+            ->getQuery();
+
+            $results = $qb->getResult();
+
+        // Associer le nombre de formations aux objets Playlist
+        foreach ($results as $index => $result) {
+            $playlist = $result[0]; // L'objet Playlist
+            $playlist->setNbFormations($result['nbFormations'] ?? 0); // Ajoute un setter dans ton entity Playlist
+            $results[$index] = $playlist;
+        }
+
+        return $results;
     }
 
 
@@ -86,16 +98,27 @@ class PlaylistRepository extends ServiceEntityRepository
         }
     
         if ($table == "") {
-            return $this->createQueryBuilder('p')
+            $qb = $this->createQueryBuilder('p')
+                ->select('p, COUNT(f.id) AS nbFormations')
                 ->leftJoin('p.formations', 'f')
                 ->where('p.' . $champ . ' LIKE :valeur')
                 ->setParameter('valeur', '%' . $valeur . '%')
                 ->groupBy('p.id')
                 ->orderBy('p.name', 'ASC')
-                ->getQuery()
-                ->getResult();
+                ->getQuery();
+
+                $results = $qb->getResult();
+    
+                // Associer le nombre de formations aux objets Playlist
+                foreach ($results as $index => $result) {
+                    $playlist = $result[0]; // L'objet Playlist
+                    $playlist->setNbFormations($result['nbFormations'] ?? 0); // Ajoute un setter dans ton entity Playlist
+                    $results[$index] = $playlist;
+                }
+
         } else {
-            return $this->createQueryBuilder('p')
+            $qb = $this->createQueryBuilder('p')
+                ->select('p, COUNT(f.id) AS nbFormations')
                 ->leftJoin('p.formations', 'f')
                 ->leftJoin('f.categories', 'c')
                 ->addSelect('f', 'c')
@@ -103,8 +126,19 @@ class PlaylistRepository extends ServiceEntityRepository
                 ->setParameter('valeur', '%' . $valeur . '%')
                 ->groupBy('p.id, c.id')
                 ->orderBy('p.name', 'ASC')
-                ->getQuery()
-                ->getResult();
+                ->getQuery();
+
+                $results = $qb->getResult();
+
+                // Associer le nombre de formations aux objets Playlist
+                foreach ($results as $index => $result) {
+                    $playlist = $result[0]; // L'objet Playlist
+                    $playlist->setNbFormations($result['nbFormations'] ?? 0); // Ajoute un setter dans ton entity Playlist
+                    $results[$index] = $playlist;
+                }
         }
+
+    return $results;
+
     }
 }
