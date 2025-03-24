@@ -12,6 +12,13 @@
     <h1>S'incrire! ✅</h1>
 
     {{ form(form) }}
+
+    {# Champs qui permet la redirection de la page après la connexion #}
+    <input type="hidden" name="_target_path" value="/">
+
+        <div class="nav-item">
+            <a href="{{ path('accueil') }}" class="btn btn-primary btn-sm">Accueil du site</a>
+        </div>
     
 </div>
 {% endblock %}
