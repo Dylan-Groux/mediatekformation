@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class FormationType extends AbstractType
 {
@@ -50,6 +51,12 @@ class FormationType extends AbstractType
                     'class' => 'form-control',
                     'min' => (new \DateTime())->format('Y-m-d'),
                 ],
+                'constraints' => [
+                    new Assert\GreaterThan([
+                        'value' => 'today',
+                        'message' => 'La date de publication ne peut pas être dans le passé.',
+                    ]),
+                ],
             ])
             ->add('playlist', EntityType::class, [
                 'class' => Playlist::class,
@@ -83,6 +90,7 @@ class FormationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'csrf_protection' => false,
             'data_class' => Formation::class,
             'is_edit' => false,
         ]);
