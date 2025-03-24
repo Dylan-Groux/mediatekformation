@@ -100,7 +100,7 @@ class FormationRepository extends ServiceEntityRepository
      */
     public function findAllForOnePlaylist($idPlaylist): array{
         return $this->createQueryBuilder('f')
-                ->join('f.playlist', 'p')
+                ->leftJoin('f.playlist', 'p')
                 ->where('p.id=:id')
                 ->setParameter('id', $idPlaylist)
                 ->orderBy('f.publishedAt', 'ASC')
