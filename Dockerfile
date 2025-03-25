@@ -18,11 +18,19 @@ WORKDIR /var/www/html
 # Copie des fichiers du projet
 COPY . /var/www/html/
 
+# Copie des fichiers Composer en premier pour optimiser le cache
+COPY composer.json composer.lock ./
+RUN composer --version
+
+
 # Installation des dépendances Symfony
 RUN composer install --no-dev --optimize-autoloader
 
 # Configuration des permissions
 RUN chown -R www-data:www-data /var/www/html/var /var/www/html/public
+
+# Ensuite, on copie le reste des fichiers
+COPY . .
 
 # Exposition du port 80
 EXPOSE 80
