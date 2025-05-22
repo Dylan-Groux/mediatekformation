@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 13 mai 2024 à 15:26
--- Version du serveur : 8.2.0
--- Version de PHP : 8.2.13
+-- Généré le : jeu. 22 mai 2025 à 08:42
+-- Version du serveur : 9.1.0
+-- Version de PHP : 8.3.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `mediatekformation`
 --
-CREATE DATABASE IF NOT EXISTS `mediatekformation` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `mediatekformation`;
 
 -- --------------------------------------------------------
 
@@ -32,9 +30,9 @@ USE `mediatekformation`;
 DROP TABLE IF EXISTS `categorie`;
 CREATE TABLE IF NOT EXISTS `categorie` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `categorie`
@@ -49,7 +47,9 @@ INSERT INTO `categorie` (`id`, `name`) VALUES
 (6, 'Android'),
 (7, 'POO'),
 (8, 'SQL'),
-(9, 'Cours');
+(9, 'Cours'),
+(10, 'Ruby'),
+(18, 'C++');
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,7 @@ INSERT INTO `categorie` (`id`, `name`) VALUES
 
 DROP TABLE IF EXISTS `doctrine_migration_versions`;
 CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `version` varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
   `execution_time` int DEFAULT NULL,
   PRIMARY KEY (`version`)
@@ -70,7 +70,8 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20240513134621', '2024-05-13 13:47:49', 1145);
+('DoctrineMigrations\\Version20240513134621', '2024-05-13 13:47:49', 1145),
+('DoctrineMigrations\\Version20250318112406', '2025-03-18 11:24:12', 287);
 
 -- --------------------------------------------------------
 
@@ -83,20 +84,19 @@ CREATE TABLE IF NOT EXISTS `formation` (
   `id` int NOT NULL AUTO_INCREMENT,
   `playlist_id` int DEFAULT NULL,
   `published_at` datetime DEFAULT NULL,
-  `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
-  `video_id` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `video_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_404021BF6BBD148` (`playlist_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=244 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `formation`
 --
 
 INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `description`, `video_id`) VALUES
-(1, 1, '2021-01-04 17:00:12', 'Eclipse n°8 : Déploiement', 'Exécution de l\'application en dehors de l\'IDE, en invite de commande.\nCréation d\'un ficher jar pour le déploiement de l\'application.\n00:20 : exécuter l\'application à partir d\'un invite de commandes\n04:41 : créer un fichier jar auto exécutable\n06:42 : exécuter un fichier jar directement\n07:09 : exécuter un fichier jar dans l\'invite de commande pour avoir les retours console', 'Z4yTTXka958'),
-(2, 1, '2021-01-02 17:00:01', 'Eclipse n°7 : Tests unitaires', 'Intégration de JUnit dans l\'application et création de tests unitaires.\n00:07 : rappel sur le principe du test unitaire\n01:01 : intégrer JUnit au projet (une seule fois)\n01:52 : créer une classe de test\n03:49 : créer une méthode de test\n08:35 : lancer le test\n09:11 : créer une autre méthode de test pour tester la même méthode\n11:02 : relancer le test', '-nw42Xq6cYE'),
+(2, 27, '2025-03-25 00:00:00', 'Eclipse n°7 : Tests unitaires', 'Intégration de JUnit dans l\'application et création de tests unitaires.\r\n00:07 : rappel sur le principe du test unitaire\r\n01:01 : intégrer JUnit au projet (une seule fois)\r\n01:52 : créer une classe de test\r\n03:49 : créer une méthode de test\r\n08:35 : lancer le test\r\n09:11 : créer une autre méthode de test pour tester la même méthode\r\n11:02 : relancer le test', '-nw42Xq6cYE'),
 (3, 1, '2020-12-30 17:00:07', 'Eclipse n°6 : Documentation technique', 'Intégration des commentaires normalisés et génération automatique de la documentation technique\n00:08 : insérer des commentaires normalisés\n02:14 : générer documentation technique\n04:35 : repérer et corriger les erreurs et warnings\n06:58 : afficher la documentation technique', 'PrK_P3TKc00'),
 (4, 1, '2020-12-29 17:00:00', 'Eclipse n°5 : Refactoring', 'Utilisation des outils de refactoring et de génération automatique de code.\n01:00 : refaire automatiquement les indentations\n01:25 : changer un nom (classe, méhode, propriété)\n04:04 : extraire une méthode\n06:19 : modifier la signature d\'une méthode\n09:23 : générer du code (constructeur, getter/setter)\n12:34 : encapsuler une propriété\n15:30 : extraire une interface', '1p_mKDDSMnQ'),
 (5, 1, '2020-11-09 17:00:25', 'Eclipse n°4 : WindowBuilder', 'Intégration de l\'outil WindowBuilder dans Eclipse pour pouvoir construire de façon visuelle, une interface graphique.\n00:00 : téléchargement et configuration de WindowBuilder\n03:00 : création d\'une JFrame avec WindowBuilder\n05:56 : construction de l\'interface graphique\n\n10:43 : gestion des événements\n16:15 : gestion des ressources graphiques (images...)', 'pQfbr3hpw04'),
@@ -112,7 +112,7 @@ INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `descript
 (16, 2, '2020-08-02 16:26:13', 'C# : Lier List et ListBox', 'Comment lier une List à une ListBox, afin de pouvoir récupérer le bon objet dans la List, lors d\'une sélection d\'une ligne dans la ListBox.\n\nNotions abordées : \nRécupération de l\'indice de ligne de la ListBox, qui est aussi l\'indice de l\'objet dans la List.\n\nPossibilité de lier les 2 avec DataSource. \n\nUtilisation de BindingList pour le lien.\n\n\n00:00 : rappel sur le remplissage du ListBox\n00:58 : gérer la suppression\n06:03 : lien avec DataSource\n08:39 : BindingList', '-Zt1vbdUdnQ'),
 (17, 2, '2020-07-31 15:55:54', 'C# : Tri avec ToString et CompareTo', 'Comment gérer le tri sur le titre, dans la liste, alors que la première information affichée est l\'année de sortie.\n\nNotions abordées : \nToString : méthode existante dans la classe Object (mère de toutes les classes) qui permet de transformer une variable (quel que soit son type) en chaîne. Cette méthode peut être redéfinie  (override) dans n\'importe quelle classe, afin de définir notre propre formatage de la transformation en chaîne.\nCompareTo : méthode présente dans l\'interface IComparable (il faut donc que la classe implémente IComparable) et qui permet de comparer 2 informations. Cette méthode sert à la gestion de tris (en gérant une comparaison personnalisée).\n\n00:49 : méthode ToString\n03:32 : méthode CompareTo\n06:19 : méthode Sort qui utilise CompareTo\n07:45 : tests', 'LwkGsXCUdeg'),
 (18, 2, '2020-07-29 16:00:07', 'C# : Sérialisation d\'objets', 'Enregistrement de la liste d\'objets dans un fichier binaire, pour pouvoir récupérer les informations après avoir fermé et réouvert l\'application. C\'est une méthode simple et légère pour sauvegarder des données provenant d\'objets métiers. Cette méthode de sauvegarde, intéressante dans certains cas, reste limitée.\nNotions abordées : sérialisation, classe sérialisable.\n\nClasse Serialise à récupérer :\nhttps://bit.ly/EmdsClasseSerialise\n(j\'ai mis comme namespace TestHeritage, comme celui de l\'application)\n\n00:00 : présentation de la classe Serialise\n02:25 : besoin d\'un nom de fichier\n02:59 : sauvegarde de l\'objet\n03:43 : récupération de l\'objet\n05:27 : classes sérialisables\n06:00 : test (les informations sont récupérées après fermeture)\n07:00 : intérêt et limite de la sérialisation \n\nErreur : 1min36 je dis que \"les méthodes sont accessibles directement par le nom de la classe car la classe est abstraite\". J\'ai oublié de compléter par le fait que ses méthodes sont statiques car le but de cette classe n\'est pas d\'être mère d\'autres classes mais juste de proposer des méthodes. Du coup, sachant qu\'elle est abstraite, donc qu\'il ne sera pas possible de créer des objets du type de cette classe et que ses méthodes ne seront pas accessibles à partir de classes filles, alors ses méthodes doivent être statiques. Et c\'est justement parce qu\'elles sont statiques qu\'elles sont accessibles directement par le nom de la classe, et pas par un objet.\n\nRemarque : Vous remarquerez que j\'insiste dans mon erreur scandaleuse de date pour la sortie de Star Wars 4...', 'OL_qY2ennMo'),
-(19, 2, '2020-07-27 16:00:01', 'C# : Classes et héritage', 'Utilisation de classes métiers pour mémoriser des informations et les utiliser pour remplir une ListBox.\nNotions abordées : classe, constructeur, getter, héritage, this, classes abstraite, méthode abstraite redéfinie dans les classes filles (override), polymorphisme, transtypage.\n\n00:00 : présentation de l\'interface\n01:34 : notion de classe au niveau des objets graphiques\n02:20 : création d\'une classe métier\n03:35 : constructeur\n05:25 : getters\n07:17 : héritage\n11:32 : notion de this\n13:10 : rendre un objet graphique visible ou non\n18:02 : utilisation de la classe List\n20:19 : déclaration d\'un objet métier\n21:20 : classe abstraite\n22:08 : création d\'objets de classes héritées\n25:58 : remplir la listBox à partir de l\'objet List\n33:00 : test du type de l\'objet \n33:50 : remplir la ListBox à partir d\'une seule méthode override\n39:44 : test\n\nRemarque n°1 : désolée pour l\'énorme erreur sur la date de sortie de Star Wars 4. Ce n\'est bien sûr pas en 87 mais en 78. Honte à moi qui en plus ai eu la chance de le voir au cinéma à sa sortie.\n\nRemarque n°2 : Désolée de l\'absence de commentaires. J\'ai dit que c\'était pour réduire la durée de la vidéo, déjà bien longue. Mais j\'aurais pu le faire en off (en faisant une pause sur la vidéo).', '0VDbDYREVcU'),
+(19, 29, '2020-07-27 16:00:01', 'C# : Classes et héritage', 'Utilisation de classes métiers pour mémoriser des informations et les utiliser pour remplir une ListBox.\nNotions abordées : classe, constructeur, getter, héritage, this, classes abstraite, méthode abstraite redéfinie dans les classes filles (override), polymorphisme, transtypage.\n\n00:00 : présentation de l\'interface\n01:34 : notion de classe au niveau des objets graphiques\n02:20 : création d\'une classe métier\n03:35 : constructeur\n05:25 : getters\n07:17 : héritage\n11:32 : notion de this\n13:10 : rendre un objet graphique visible ou non\n18:02 : utilisation de la classe List\n20:19 : déclaration d\'un objet métier\n21:20 : classe abstraite\n22:08 : création d\'objets de classes héritées\n25:58 : remplir la listBox à partir de l\'objet List\n33:00 : test du type de l\'objet \n33:50 : remplir la ListBox à partir d\'une seule méthode override\n39:44 : test\n\nRemarque n°1 : désolée pour l\'énorme erreur sur la date de sortie de Star Wars 4. Ce n\'est bien sûr pas en 87 mais en 78. Honte à moi qui en plus ai eu la chance de le voir au cinéma à sa sortie.\n\nRemarque n°2 : Désolée de l\'absence de commentaires. J\'ai dit que c\'était pour réduire la durée de la vidéo, déjà bien longue. Mais j\'aurais pu le faire en off (en faisant une pause sur la vidéo).', '0VDbDYREVcU'),
 (20, 2, '2020-07-25 16:00:17', 'C# : lier Github à Visual Studio', 'Pour un travail professionnel sur des projets en commun, il est possible de configurer Visual Studio pour qu\'il communique avec GitHub. \nCette vidéo montre comment réaliser cette configuration mais aussi comment publier un projet, récupérer le clone pour travailler sur une branche indépendante puis envoyer des propositions de modifications de code au développeur principal qui peut valider ou refuser les modifications.\nNotions abordées : commit, push, pull request, merge.\n\n00:00 : téléchargement et installation Github\n01:32 : configuration de Github dans Visual Studio\n02:47 : publication sur GitHub\n03:30 : création compte sous Github\n04:51 : connexion au compte Github à partir de Visual Studio\n05:11 : publication du projet sur Github\n07:02 : création d\'un nouveau projet à partir du clône\n09:12 : création d\'une branche\n10:18 : modifications sur le code\n11:25 : enregistrement des modifications sur Github (commit and push)\n12:53 : envoi d\'une requête de tirage (pull request)\n14:30 : possibilités du développeur sous GitHub\n15:00 : gestion des messages entre Github et Visual Studio\n16:20 : affichage des modifications proposées\n17:12 : validation des modifications (merge pull request)\n18:29 : autre modification sur le code avec toute la démarche\n20:06 : refus de la demande (close pull request)\n\n\nIMPORTANT :\nA 02:47 \"publication sur GitHub, si le bouton \"prise en main\" n\'a aucune action, voici le mode opératoire à suivre :\n1. Allez vous même dans la fenêtre \"Team Explorer\" et sélectionnez \"Synchroniser\" : vous pourrez alors continuer le guide.\n2. Si à 5:45, au niveau de GitHub, vous n\'avez qu\'un commit au lieu de 2 et, dans la liste des fichiers, vous ne voyez pas le fichier \"Calculs.sln\", alors vous devez gérer vous-même le commit. Pour cela, allez dans \"Team Explorer\" puis \"Accueil\" (la maison) et sélectionnez \"Modifications\". Mettez un commentaire puis sélectionnez \"Valider tout et pousser\" (surtout, prenez bien \"et pousser\" et non pas juste \"valider tout\"). Vérifiez sur GitHub que le commit a bien été enregistré.\n\n\n\nERREUR : \nA 08:00, je dis qu\'il faut donner un nom de dossier qui correspond au nom du projet, ce qui est faux car le dossier va se créer automatiquement.', 'p4Y0WvpEGgU'),
 (21, 2, '2020-07-23 16:00:01', 'C# : création d\'objets graphiques dans le code', 'Allons plus loin dans le code des applications de bureau en C# (sous Visual Studio 2019) :\nApprendre à créer des objets graphiques directement dans le code (objets simples et aussi groupes d\'objets).\n00:00 : intérêt\n00:46 : présentation de l\'interface\n01:06 : création d\'un objet simple dans le code (bouton)\n02:59 : affectation de l\'objet à un conteneur d\'affichage\n06:15 : taille et position\n08:37 : TabIndex\n09:10 : Text\n09:43 : création de la capture de l\'événement liée à l\'objet\n11:08 : création de la procédure événementielle correspondante\n13:07 : création d\'un conteneur pour insérer plusieurs objets graphiques\n15:04 : création d\'une boucle pour générer plusieurs objets\n15:30 : déclaration et création de l\'objet\n16:34 : ajout dans le groupe \n17:06 : calcul de la position\n18:26 : construction du texte par calcul (lettre de l\'alphabet)\n21:14 : création de la capture de l\'événement liée à tous les objets\n22:20 : création de la procédure événementielle unique pour tous les objets\n23:01 : utilisation du paramètre sender\n25:29 : exécution pour tester', '3RayCDFo_pI'),
 (22, 2, '2020-07-21 16:00:25', 'C# : utilisation des objets graphiques', 'Pour les débutants en application de bureau sous C# (sous Visual Studio 2019) :\nComprendre les événements, gérer les objets graphiques dans le code, sécuriser l\'interface.\n00:00 : création de l\'application de bureau\n00:34 : création de l\'interface\n05:25 : 1e méthode de création d\'une procédure événementielle\n05:43 : 2e méthode de création d\'une procédure événementielle\n06:46 : 3e méthode de création d\'une procédure événementielle\n08:01 : présentation du code généré automatiquement dans Designer\n12:05 : lien entre capture d\'événement et procédure événementielle\n13:26 : supprimer proprement une procédure événementielle\n17:22 : erreur lors d\'une mauvaise suppression d\'une procédure événementielle\n19:14 : gestion du focus\n20:58 : ajout dans une liste, passage en majuscule, utilisation de variables locales\n24:14 : événement KeyPress et utilisation du paramètre de type KeyPressEventArgs\n27:08 : appel volontaire d\'une procédure événementielle\n27:40 : suppression d\'une ligne d\'une liste si une ligne est sélectionnée\n29:57 : MessageBox (boite de dialogue) simple\n31:16 : MessageBox pour une demande de confirmation\n33:57 : événement SelectedIndexChanged sur une liste\n35:52 : exécution pour tester\n38:29 : création d\'un module non événementiel avec la refactorisation\n41:42 : optimisation d\'un module non événementiel\n42:24 : exécution pour tester\n43:18 : propriété Enabled\n45:27 : exécution pour tester\n\nAutres remarques :\nVous avez dû remarquer un flottement à 40mn25s : Visual Studio avait planté...\nJ\'ai aussi fait une bêtise à 42mn13s en supprimant une ligne où le label était remis à vide alors que je devais supprimé le texte remis à vide.', 'wkzXQGQiZHA'),
@@ -121,7 +121,7 @@ INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `descript
 (25, 3, '2019-12-10 17:00:04', 'Python n°18 : Décorateur singleton', 'Nouvel exemple de décorateur qui cette fois, décore une classe et non une fonction. Ce décorateur permet de faire en sorte qu\'une classe soit un singleton.\nUne classe singleton est une classe qui ne peut être instanciée qu\'une seule fois.', 'BLPIdhAHQmQ'),
 (26, 3, '2019-12-02 10:46:38', 'Python n°17 : Décorateur exemple simple', 'Décorateur pour calculer le temps d\'exécution de fonctions. Exemple montrant la différence de performance entre 2 types de boucles.', '24_M88Ebyp0'),
 (27, 3, '2019-11-22 11:03:07', 'Python n°16 : Décorateurs', 'Présentation théorique de la notion de décorateurs.', '0bMI9Z1XgIE'),
-(28, 3, '2019-11-20 15:18:21', 'Python n°15 : Paramètres des fonctions', 'Présentation des différentes possibilités de paramètres d\'une fonction : \n- paramètres simples\n- paramètres initialisés\n- paramètres non nommés de nombre variable (liste)\n- paramètres nommés de nombre variable (dictionnaire)', 'EsXg1o3u-g4'),
+(28, 29, '2019-11-20 15:18:21', 'Python n°15 : Paramètres des fonctions', 'Présentation des différentes possibilités de paramètres d\'une fonction : \n- paramètres simples\n- paramètres initialisés\n- paramètres non nommés de nombre variable (liste)\n- paramètres nommés de nombre variable (dictionnaire)', 'EsXg1o3u-g4'),
 (29, 3, '2019-10-28 13:21:15', 'Python n°14 : Héritage', 'Notion d\'héritage, appel du constructeur de la classe mère pour valoriser les propriétés de la classe mère, test du type d\'un objet.\nPour voir ces notions, reprise de l\'exercice de la vidéo 12 sur la création de la classe Personnage :\nhttps://youtu.be/KHsEAuZdS5w\navec ajout des classes filles Mortel et Immortel.', 'hWtHkP9uwR8'),
 (30, 3, '2019-10-25 13:56:29', 'Python n°13 : Encapsulation', 'Technique pour gérer les getter et setter sous Python pour éviter l\'accès direct aux propriétés.\nLa vidéo repart de l\'exercice précédent (12) :\nhttps://youtu.be/KHsEAuZdS5w', 'pLnMkC79i4U'),
 (31, 3, '2019-10-24 10:13:43', 'Python n°12 : Classe et liste d\'objets', 'Initiation à la programmation objet sous Python.\nDécouverte de la création d\'une classe et de la gestion d\'une liste d\'objets de cette classe. Le programme permet de saisir des noms de personnages puis de gérer des attaques entre les personnages, avec la gestion de la vie de chaque personnage.', 'KHsEAuZdS5w'),
@@ -280,13 +280,13 @@ INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `descript
 (184, 13, '2017-09-29 09:18:33', 'Bases de la programmation n°12 - procédural : exercice11 (boucle for)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : utiliser la boucle for (nombre d\'itération connu)\r\nLangage : C# sous Visual Studio version entreprise 2017', '7tss6XwFO8I'),
 (185, 13, '2017-09-28 09:00:30', 'Bases de la programmation n°11 - procédural : exercice10 (boucle do/while)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : utiliser la boucle do/while pour les test de saisie\r\nLangage : C# sous Visual Studio version entreprise 2017', 'INE6HvHBRG0'),
 (186, 13, '2017-09-28 08:37:47', 'Bases de la programmation n°10 - procédural : exercice9 (boucle do/while)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : utiliser la boucle do/while pour les test de saisie\r\nLangage : C# sous Visual Studio version entreprise 2017', 'QDo1e7-OxWU'),
-(187, 13, '2017-09-27 07:50:29', 'Bases de la programmation n°9 - procédural : exercice8 (boucle while)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : utiliser la boucle universelle while avec question pour arrêter\r\nLangage : C# sous Visual Studio version entreprise 2017', 'Pb1esUzrkIA'),
+(187, 22, '2017-09-27 07:50:29', 'Bases de la programmation n°9 - procédural : exercice8 (boucle while)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : utiliser la boucle universelle while avec question pour arrêter\r\nLangage : C# sous Visual Studio version entreprise 2017', 'Pb1esUzrkIA'),
 (188, 13, '2017-09-27 07:44:20', 'Bases de la programmation n°8 - procédural : exercice7 (boucle while)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : utiliser la boucle universelle while\r\nLangage : C# sous Visual Studio version entreprise 2017', 'XkLPXXSNTqM'),
-(189, 13, '2017-09-26 09:30:45', 'Bases de la programmation n°7 - procédural : exercice6 (conditions imbriquées)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : conditions imbriquées\r\nLangage : C# sous Visual Studio version entreprise 2017', 'km6yGYNE7U4'),
+(189, 22, '2017-09-26 09:30:45', 'Bases de la programmation n°7 - procédural : exercice6 (conditions imbriquées)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : conditions imbriquées\r\nLangage : C# sous Visual Studio version entreprise 2017', 'km6yGYNE7U4'),
 (190, 13, '2017-09-26 09:19:10', 'Bases de la programmation n°6 - procédural : exercice5 (condition)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : condition (alternative avec if)\r\nLangage : C# sous Visual Studio version entreprise 2017', 'L9ePj3vr8YM'),
-(191, 13, '2017-09-25 15:48:28', 'Bases de la programmation n°5 - procédural : exercice4 (calcul dans affichage)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : calcul dans un affichage\r\nLangage : C# sous Visual Studio version entreprise 2017', 'ZE0W7HZpStA'),
+(191, 22, '2017-09-25 15:48:28', 'Bases de la programmation n°5 - procédural : exercice4 (calcul dans affichage)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : calcul dans un affichage\r\nLangage : C# sous Visual Studio version entreprise 2017', 'ZE0W7HZpStA'),
 (192, 13, '2017-09-25 15:30:46', 'Bases de la programmation n°4 - procédural : exercice3 (calculs)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\"\r\n précédentes\r\nBut : découverte du type float et des calculs\r\nLangage : C# sous Visual Studio version entreprise 2017', 'wWI4Y8RzJXA'),
-(193, 13, '2017-09-21 16:03:30', 'Bases de la programmation n°3 - procédural : exercice2 (saisie)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : saisie\r\nLangage : C# sous Visual Studio version entreprise 2017', 'URwYM1jToig'),
+(193, 22, '2017-09-21 16:03:30', 'Bases de la programmation n°3 - procédural : exercice2 (saisie)', 'Prérequis : avoir vu les vidéos \"Bases de la programmation\" précédentes\r\nBut : saisie\r\nLangage : C# sous Visual Studio version entreprise 2017', 'URwYM1jToig'),
 (194, 13, '2017-09-21 14:41:21', 'Bases de la programmation n°2 - procédural : exercice1 (affichage)', 'Prérequis : aucun\r\nBut : initialisation et affichage avec concaténation\r\nLangage : C# sous Visual Studio version entreprise 2017', 'w9Vc63-bWhY'),
 (196, 13, '2017-09-20 17:35:03', 'Bases de la programmation n°1 - procédural : premier exemple', 'REMARQUE IMPORTANTE : désolée pour les écritures trop petites. C\'est plus lisible à partir de la prochaine vidéo.\r\n\r\nPrérequis : aucun\r\nBut : découvrir un tout premier exemple de programme en procédural (jeu du nombre caché) en C# sous Visual Studio (version entreprise 2017)', 'iXkPQpzTWO4'),
 (197, 14, '2017-05-02 10:17:11', 'Exercice triggers, sql et correctifs (correction sql sujet EDC cas aeroplan 2014 BTS SIO)', 'Prérequis : avoir vu le cours triggers (et mcd)\r\nBut : Présenter comment traiter les parties triggers, sql et correctifs d\'un sujet de BTS SIO', 'MY3iht6rexA'),
@@ -333,7 +333,8 @@ INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `descript
 (237, 24, '2016-09-25 10:10:06', 'Cours UML (16 à 18 / 33) : diagramme de séquences', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML', 'OL2Ks4jeUZ0'),
 (238, 24, '2016-09-25 10:07:00', 'Cours UML (12 à 15 / 33) : diagramme d\'états', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML', 'L1x4sLVR7CI'),
 (239, 24, '2016-09-25 10:03:58', 'Cours UML (8 à 11 / 33) : diagramme de classes', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML', '8PmTJIrlS5w'),
-(240, 24, '2016-09-25 09:59:04', 'Cours UML (1 à 7 / 33) : introduction et cas d\'utilisation', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML\r\n\r\n\r\nRemarque :\r\nDe nouvelles vidéos sur UML :\r\nDiagramme de cas d\'utilisation : https://youtu.be/LDTDlXMV1xY', 'dJd6azZr9Kg');
+(240, 24, '2016-09-25 09:59:04', 'Cours UML (1 à 7 / 33) : introduction et cas d\'utilisation', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML\r\n\r\n\r\nRemarque :\r\nDe nouvelles vidéos sur UML :\r\nDiagramme de cas d\'utilisation : https://youtu.be/LDTDlXMV1xY', 'dJd6azZr9Kg'),
+(243, 11, '2025-03-27 00:00:00', 'dzadza', 'dzadaz', NULL);
 
 -- --------------------------------------------------------
 
@@ -356,7 +357,7 @@ CREATE TABLE IF NOT EXISTS `formation_categorie` (
 
 INSERT INTO `formation_categorie` (`formation_id`, `categorie_id`) VALUES
 (1, 1),
-(2, 1),
+(2, 9),
 (3, 1),
 (4, 1),
 (5, 1),
@@ -631,7 +632,8 @@ INSERT INTO `formation_categorie` (`formation_id`, `categorie_id`) VALUES
 (239, 2),
 (239, 9),
 (240, 2),
-(240, 9);
+(240, 9),
+(243, 3);
 
 -- --------------------------------------------------------
 
@@ -642,9 +644,9 @@ INSERT INTO `formation_categorie` (`formation_id`, `categorie_id`) VALUES
 DROP TABLE IF EXISTS `messenger_messages`;
 CREATE TABLE IF NOT EXISTS `messenger_messages` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `body` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `headers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue_name` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
@@ -663,10 +665,10 @@ CREATE TABLE IF NOT EXISTS `messenger_messages` (
 DROP TABLE IF EXISTS `playlist`;
 CREATE TABLE IF NOT EXISTS `playlist` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `playlist`
@@ -697,10 +699,57 @@ INSERT INTO `playlist` (`id`, `name`, `description`) VALUES
 (22, 'Cours Informatique embarquée', 'Présentation rapide de l\'informatique embarquée (14mn24).\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsInformatique_embarquee'),
 (23, 'Cours Triggers', 'Cours Triggers et procédures stockées (57mn)\r\n\r\nPrérequis : connaissances en Merise2 (playlists MCD et Merise2) et SQL\r\nBut : introduction aux triggers et procédures stockées (programmation dans un SGBDR)\r\nLe cours est constitué de 32 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-4 : introduction\r\n5-9 : exemple trigger sur exclusion\r\n10-14 : exemple trigger sur inclusion\r\n15-20 : syntaxe du langage\r\n21-25 : inclusion multiple et autres exemples de triggers\r\n26-32 : procédures et fonctions stockées\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTriggers'),
 (24, 'Cours UML', 'Cours UML (57mn)\r\nPrérequis : connaissances en objet \r\nBut : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML'),
-(25, 'Cours Merise/2', 'La playlist contient :\r\n- la nouvelle version du cours en une seule vidéo\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsMerise2'),
+(25, 'Cours Merise/21', 'La playlist contient :\r\n- la nouvelle version du cours en une seule vidéo\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsMerise'),
 (26, 'Cours Modèle relationnel et MCD', 'La playlist contient :\r\n- la nouvelle version du cours en une seule vidéo (1h08)\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsMCD'),
 (27, 'Cours de programmation objet', 'La playlist contient :\r\n- la nouvelle version du cours en une seule vidéo\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsObjet'),
-(28, 'playlist test', 'description playlist test');
+(29, 'Playlist pour tester', 'on test un peu tout ca'),
+(32, 'aaaaa', 'aaaa');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `playlist_categorie`
+--
+
+DROP TABLE IF EXISTS `playlist_categorie`;
+CREATE TABLE IF NOT EXISTS `playlist_categorie` (
+  `playlist_id` int NOT NULL,
+  `categorie_id` int NOT NULL,
+  PRIMARY KEY (`playlist_id`,`categorie_id`),
+  KEY `IDX_7A8316176BBD148` (`playlist_id`),
+  KEY `IDX_7A831617BCF5E72D` (`categorie_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `roles` json NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_IDENTIFIER_EMAIL` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
+(1, 'dylangroux64@gmail.com', '[]', 'Dg601122105'),
+(3, 'dylangroux2105@gmail.com', '[]', 'Dg601122105'),
+(5, 'harryleperroquet60@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$qfh3WBN4hZvQAeXaPORAeOl39I5MSe.loCHX97mVRZsvDbOU9XyR2'),
+(6, 'admin@user.fr', '[]', '$2y$13$7fW9nKi8mq2zakd6OXzRiOdQf9prR9Hcj/i7c94ddJYU.gvtG1O7W'),
+(7, 'adminu@user.fr', '[]', '$2y$13$1luNd5RzXF2QO/oh8b6.wey/SRdcl6tkIeICHeWnF84FAaDRc5atW'),
+(8, 'test@user.fr', '[]', '$2y$13$NI.Hu2J3GTIYx3oNAVZMDO0uZAsWbxnutIokQBoFftuV55zG6WUDm'),
+(9, 'user@user.fr', '[]', '$2y$13$c7QCKT2t.Vl7SosnMbLsR.UYXz5Ek.5y.1zgY9qbtZkwZF9ylqwPG'),
+(11, 'testa@gmail.com', '[]', '$2y$13$rHThMaX9ycT/WgbUHRh0Qu9ulbbFEcos2bgWXO6PTVc9WrYmz.NnC'),
+(12, 'test@gmail.com', '[]', '$2y$13$Fz3QQTqjqGTiV2kG7EBihekPZ7tSkq9TYtXcWvWClzEm5CFqE/vOu');
 
 --
 -- Contraintes pour les tables déchargées
@@ -713,11 +762,11 @@ ALTER TABLE `formation`
   ADD CONSTRAINT `FK_404021BF6BBD148` FOREIGN KEY (`playlist_id`) REFERENCES `playlist` (`id`);
 
 --
--- Contraintes pour la table `formation_categorie`
+-- Contraintes pour la table `playlist_categorie`
 --
-ALTER TABLE `formation_categorie`
-  ADD CONSTRAINT `FK_830086E95200282E` FOREIGN KEY (`formation_id`) REFERENCES `formation` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `FK_830086E9BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `categorie` (`id`) ON DELETE CASCADE;
+ALTER TABLE `playlist_categorie`
+  ADD CONSTRAINT `FK_7A8316176BBD148` FOREIGN KEY (`playlist_id`) REFERENCES `playlist` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_7A831617BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `categorie` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
